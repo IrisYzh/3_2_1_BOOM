@@ -4,9 +4,9 @@ import digitalio
 
 class GameEncoder:
     """
-    只在 A 相产生下降沿（1→0）时 +1
-    —— 不会因为旋钮的 4-step/bounce 重复计数
-    —— 廉价旋钮也稳定，抗抖动
+	Only increments on the A-phase falling edge (1 → 0).
+	Prevents extra counts caused by the encoder’s 4-step behavior or bouncing.
+	Makes the knob reading more stable and resistant to noise.
     """
 
     def __init__(self, pin_a, pin_b, pull=digitalio.Pull.UP, debounce_ms=3):
@@ -26,7 +26,7 @@ class GameEncoder:
         now = time.monotonic() * 1000
         a = self._a.value
 
-        # 检测下降沿（high -> low）
+        # high -> low
         if self._last_a and not a:
             if now - self._last_event > self._debounce_ms:
                 self.count += 1
